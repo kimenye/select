@@ -15,7 +15,8 @@ body{
     height: 64px;
     padding-left: 75px;
     padding-top: 20px;
-    /*text-decoration: none;*/
+    cursor: pointer;
+    text-decoration: none;
 }
 
 .category a:hover {
