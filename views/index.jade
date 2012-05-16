@@ -1,9 +1,34 @@
 .navbar.navbar-fixed-top
   .navbar-inner
     .container
-      a.brand =title
+      .nav-collapse
+        ul.nav
+          li(data-bind="css: { active: $root.selectedCategory() == null}")
+            a(href="#") Home
+        ul.nav(data-bind='foreach: $root.categories')
+          li
+            a(data-bind="attr: { href: url, title: title}, text: title")
+        form.navbar-search
+          input.search-query.span2(type="text", placeholder="Search")
 .container
   .row
+    .hero-unit
+      h1 Compare + Save.
+      p
+        | RateCity takes the hassle out of finding the right financial products for you - saving you time and money.
+        | Make your selection from options below...
+.container
+  .row
+    ul.unstyled(data-bind='foreach: $root.categories')
+      li.span4.category
+        a(data-bind="attr: { 'class': type }, text: title")
+
+.container
+  .row
+    hr
+    footer
+      span Fancy copyright stuff and privacy policies
+
 
 script(type='text/javascript', src='/javascripts/jquery.1.7.2.js')
 script(type='text/javascript', src='/javascripts/bootstrap.min.js')

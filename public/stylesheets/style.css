@@ -1,2 +1,43 @@
+body{
+    padding-top: 60px;
+}
 
+.category {
+    font-size: 20px;
+}
+
+.category a {
+    display: block;
+    height: 64px;
+    color: #333333;
+    background-position: 10px 0;
+    background-repeat: no-repeat;
+    height: 64px;
+    padding-left: 75px;
+    padding-top: 20px;
+    /*text-decoration: none;*/
+}
+
+.category a:hover {
+    color: #0099FF;
+}
+
+.credit-cards {
+    background: url('/images/creditcards.png') no-repeat;
+}
+.car-loans {
+    background: url('/images/carloans.png') no-repeat;
+}
+.home-loans {
+    background: url('/images/homeloans.png') no-repeat;
+}
+.personal-loans {
+    background: url('/images/personalloans.png') no-repeat;
+}
+.term-deposits {
+    background: url('/images/termdeposits.png') no-repeat;
+}
+.savings-accounts {
+    background: url('/images/savingsaccounts.png') no-repeat;
+}
 
