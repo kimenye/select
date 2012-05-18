@@ -23,6 +23,11 @@ body{
     color: #0099FF;
 }
 
+h1.title {
+    padding-left: 80px;
+    line-height: 70px;
+}
+
 .credit-cards {
     background: url('/images/creditcards.png') no-repeat;
 }
