@@ -46,16 +46,16 @@ function App() {
         });
 
 
-//        this.get('', function() {
-//            console.log("In the root url ");
-//            if (self.selectedCategory()) {
-//                self.selectedCategory(null);
-//            }
-//        });
-
         this.get('', function() {
-            this.app.runRoute('get', '#car-loans');
+            console.log("In the root url ");
+            //if (self.selectedView()) {
+                self.selectedView(null);
+            //}
         });
+
+//        this.get('', function() {
+//            this.app.runRoute('get', '#car-loans');
+//        });
 
     }).run();
 }
@@ -69,7 +69,7 @@ ko.bindingHandlers.fadeVisible = {
     update: function(element, valueAccessor) {
         // Whenever the value subsequently changes, slowly fade the element in or out
         var value = valueAccessor();
-        ko.utils.unwrapObservable(value) ? $(element).fadeIn() : $(element).fadeOut();
+        ko.utils.unwrapObservable(value) ? $(element).fadeIn("fast") : $(element).slideUp();
     }
 };
 

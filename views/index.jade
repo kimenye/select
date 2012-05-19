@@ -19,12 +19,10 @@ section#main
           | Select takes the hassle out of finding the right financial products for you - saving you time and money.
           | Make your selection from options below...
   .container(data-bind="fadeVisible: selectedView() == null")
-    row
-      h6 Select one of the categories
     .row
-      ul.unstyled(data-bind='foreach: $root.categories')
+      ul.unstyled(data-bind='foreach: $root.views')
         li.span4.category
-          a(data-bind="attr: { 'class': type }, text: title, click: $root.selectCategory")
+          a(data-bind="attr: { 'class': type }, text: title, click: $root.selectView")
 
   .container(data-bind="fadeVisible: selectedView() != null, with: selectedView")
     .row(data-bind="template: { name: type }")
@@ -52,8 +50,9 @@ script(type='text/html', id='car-loans')
     .row(data-bind="template: { name: 'common-header' }")
   .container-fluid
     .row-fluid
-      .span2
-      .span10
+      .span3
+        span(data-bind="")
+      .span9
         table.table.table-bordered
           thead
             th id
