@@ -6,14 +6,17 @@ function App() {
      *
      * @type {*} ComparableItemCategory[]
      */
-    self.categories = ko.observableArray([]);
+    self.views = ko.observableArray([
+        new CreditCardView(),
+        new CarLoanView()
+    ]);
 
     /**
      * Selected category
      *
      * @type {*} ComparableItemCategory
      */
-    self.selectedCategory = ko.observable();
+    self.selectedView = ko.observable();
 
     /**
      * Load some categories
@@ -30,18 +33,16 @@ function App() {
     };
 
 
-
-    self.selectCategory = function(category) {
-        location.hash = category.type
+    self.selectView = function(view) {
+        location.hash = view.type
     };
 
-    self.loadCategories();
 
     Sammy(function() {
 
-        this.get('#:category', function() {
-            category = _.find(self.categories(), function (category) { return category.type == this.params.category; }, this);
-            if (category) self.selectedCategory(category);
+        this.get('#:view', function() {
+            _view = _.find(self.views(), function (view) { return view.type == this.params.view; }, this);
+            if (_view) self.selectedView(_view);
         });
 
 
@@ -52,15 +53,12 @@ function App() {
 //            }
 //        });
 
-        this.get('', function() { this.app.runRoute('get', '#car-loans') });
+        this.get('', function() {
+            this.app.runRoute('get', '#car-loans');
+        });
 
     }).run();
 }
-
-
-/*function CarLoanWizard() {
-    var self = this;
-} */
 
 ko.bindingHandlers.fadeVisible = {
     init: function(element, valueAccessor) {
@@ -75,65 +73,8 @@ ko.bindingHandlers.fadeVisible = {
     }
 };
 
-
-var View = function(title, templateName, data) {
-    this.title = title;
-    this.templateName = templateName;
-    this.data = data;
-};
-
-var creditCardView = {
-    items: ko.observableArray([
-        { id: 1, name: "VISA" },
-        { id: 2, name: "MASTERCARD" },
-        { id: 3, name: "AMEX" }
-    ])
-};
-
-var carLoanView = {
-    items: ko.observableArray([
-        { id: 1, name: "ANZ - Car loan" },
-        { id: 2, name: "COMMBANK - Car loan" }
-    ])
-};
-
-function ViewModel() {
-    var self = this;
-
-    self.views = ko.observableArray([
-        new View("Credit Cards", "creditCardView", creditCardView),
-        new View("Car Loans", "carLoanView", carLoanView)
-    ]);
-
-    self.selectView = function(view) {
-//        console.log("Selected view " + view.title + " : " + view.templateName);
-        location.hash = view.templateName;
-    };
-
-    self.selectedView = ko.observable();
-
-    Sammy(function() {
-
-        this.get('#:view', function() {
-            var view = _.find(self.views(), function(view) { return view.templateName == this.params.view}, this);
-            if (view) self.selectedView(view);
-            //category = _.find(self.categories(), function (category) { return category.type == this.params.category; }, this);
-            //if (category) self.selectedCategory(category);
-        });
-
-//        this.get('')
-        this.get('', function() { this.app.runRoute('get', '#carLoanView') });
-    }).run();
-}
-
-
 $(function() {
-    ko.applyBindings(new ViewModel(), $("#components")[0]);
-//    ko.applyBindings(new App());
-//    ko.applyBindings(new CarLoanWizard());
-
-//    ko.applyBindings(new ParentViewModel(), $("#parent")[0]);
-//    ko.applyBindings(new ChildViewModel(), $("#child")[0]);
+    ko.applyBindings(new App(), $("#main")[0]);
 });
 
 
