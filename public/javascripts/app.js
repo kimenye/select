@@ -59,8 +59,6 @@ function App() {
 
 
     self.selectCategory = function(category) {
-//        self.selectedCategory(category)
-        console.log("Selected type " + category.title);
         location.hash = category.type
     };
 
@@ -69,19 +67,11 @@ function App() {
     Sammy(function() {
 
         this.get('#:category', function() {
-            console.log("Params is " + this.params.category);
-            var cat = this.params.category;
-            var category = ko.utils.arrayFilter(self.categories(), function (category) {
-                return category.type == cat;
-            });
-
-            console.log("Got category " + category[0].title);
-            if (category[0])
-                self.selectedCategory(category[0]);
-
+            category = _.find(self.categories(), function (category) { return category.type == this.params.category; }, this);
+            if (category) self.selectedCategory(category);
         });
 
-        //Enable this route for production
+
 //        this.get('', function() {
 //            console.log("In the root url ");
 //            if (self.selectedCategory()) {
@@ -95,9 +85,9 @@ function App() {
 }
 
 
-//function CarLoanWizard() {
-//    var self = this;
-//}
+function CarLoanWizard() {
+    var self = this;
+}
 
 ko.bindingHandlers.fadeVisible = {
     init: function(element, valueAccessor) {
@@ -113,8 +103,8 @@ ko.bindingHandlers.fadeVisible = {
 };
 
 $(function() {
-    console.log("About to load bindings");
     ko.applyBindings(new App());
+//    ko.applyBindings(new CarLoanWizard());
 });
 
 

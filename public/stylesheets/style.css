@@ -28,6 +28,11 @@ h1.title {
     line-height: 70px;
 }
 
+p.byline {
+    margin-left: 80px;
+    margin-top: -18px;
+}
+
 .credit-cards {
     background: url('/images/creditcards.png') no-repeat;
 }
