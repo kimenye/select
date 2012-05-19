@@ -45,17 +45,9 @@ function App() {
             if (_view) self.selectedView(_view);
         });
 
-
         this.get('', function() {
-            console.log("In the root url ");
-            //if (self.selectedView()) {
-                self.selectedView(null);
-            //}
+            self.selectedView(null);
         });
-
-//        this.get('', function() {
-//            this.app.runRoute('get', '#car-loans');
-//        });
 
     }).run();
 }
