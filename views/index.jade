@@ -43,7 +43,13 @@ section#main
     section(data-bind="with: selectedView")
       .row(data-bind="template: { name: templateName, data: data}")
 
-script(type='text/html', id='credit-cards')
+script(type="text/html", id="common-header")
+  h1.title(data-bind="attr: { 'class': type + \" title \" }, text: title")
+  p.byline Need some help? Check out our guide.
+
+script(type='text/html', id='car-loans')
+  .container
+    .row(data-bind="template: { name: 'common-header' }")
   .container-fluid
     .row-fluid
       .span2
@@ -57,7 +63,9 @@ script(type='text/html', id='credit-cards')
               td(data-bind="text: id")
               td(data-bind="text: name")
 
-script(type='text/html', id='car-loans')
+script(type='text/html', id='credit-cards')
+  .container
+    .row(data-bind="template: { name: 'common-header' }")
   .container-fluid
     .row-fluid
       .span2
