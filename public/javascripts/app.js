@@ -1,30 +1,3 @@
-/**
- * The category of items that we are comparing,
- *
- * TODO: Move to the server?
- * @param data
- * @constructor
- */
-function ComparableItemCategory(data) {
-    var self = this;
-    this.type = data.type;
-    this.title = data.title;
-    this.icon = data.icon;
-}
-/**
- * The types of the comparable
- *
- * @type {Object}
- */
-ComparableCategoryType = {
-    CREDIT_CARDS: "credit-cards",
-    HOME_LOANS: "home-loans",
-    PERSONAL_LOANS: "personal-loans",
-    SAVINGS_ACCOUNTS: "savings-accounts",
-    TERM_DEPOSITS: "term-deposits",
-    CAR_LOANS: "car-loans"
-}
-
 function App() {
     var self = this;
 
@@ -85,9 +58,9 @@ function App() {
 }
 
 
-function CarLoanWizard() {
+/*function CarLoanWizard() {
     var self = this;
-}
+} */
 
 ko.bindingHandlers.fadeVisible = {
     init: function(element, valueAccessor) {
@@ -102,9 +75,65 @@ ko.bindingHandlers.fadeVisible = {
     }
 };
 
+
+var View = function(title, templateName, data) {
+    this.title = title;
+    this.templateName = templateName;
+    this.data = data;
+};
+
+var creditCardView = {
+    items: ko.observableArray([
+        { id: 1, name: "VISA" },
+        { id: 2, name: "MASTERCARD" },
+        { id: 3, name: "AMEX" }
+    ])
+};
+
+var carLoanView = {
+    items: ko.observableArray([
+        { id: 1, name: "ANZ - Car loan" },
+        { id: 2, name: "COMMBANK - Car loan" }
+    ])
+};
+
+function ViewModel() {
+    var self = this;
+
+    self.views = ko.observableArray([
+        new View("Credit Cards", "creditCardView", creditCardView),
+        new View("Car Loans", "carLoanView", carLoanView)
+    ]);
+
+    self.selectView = function(view) {
+//        console.log("Selected view " + view.title + " : " + view.templateName);
+        location.hash = view.templateName;
+    };
+
+    self.selectedView = ko.observable();
+
+    Sammy(function() {
+
+        this.get('#:view', function() {
+            var view = _.find(self.views(), function(view) { return view.templateName == this.params.view}, this);
+            if (view) self.selectedView(view);
+            //category = _.find(self.categories(), function (category) { return category.type == this.params.category; }, this);
+            //if (category) self.selectedCategory(category);
+        });
+
+//        this.get('')
+        this.get('', function() { this.app.runRoute('get', '#carLoanView') });
+    }).run();
+}
+
+
 $(function() {
-    ko.applyBindings(new App());
+    ko.applyBindings(new ViewModel(), $("#components")[0]);
+//    ko.applyBindings(new App());
 //    ko.applyBindings(new CarLoanWizard());
+
+//    ko.applyBindings(new ParentViewModel(), $("#parent")[0]);
+//    ko.applyBindings(new ChildViewModel(), $("#child")[0]);
 });
 
 

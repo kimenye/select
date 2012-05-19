@@ -10,26 +10,67 @@
             a(data-bind="attr: { title: title}, click: $root.selectCategory, text: title")
         form.navbar-search
           input.search-query.span2(type="text", placeholder="Search")
-.container(data-bind="fadeVisible: selectedCategory() == null")
+.hide.container(data-bind="fadeVisible: selectedCategory() == null")
   .row
     .hero-unit
       h1 Compare + Save.
       p
         | Select takes the hassle out of finding the right financial products for you - saving you time and money.
         | Make your selection from options below...
-.container(data-bind="fadeVisible: selectedCategory() == null")
+.hide.container(data-bind="fadeVisible: selectedCategory() == null")
   .row
     ul.unstyled(data-bind='foreach: $root.categories')
       li.span4.category
         a(data-bind="attr: { 'class': type }, text: title, click: $root.selectCategory")
 
-.container(data-bind="fadeVisible: selectedCategory() != null, with: selectedCategory")
+.hide.container(data-bind="fadeVisible: selectedCategory() != null, with: selectedCategory")
   .row
     .span10
       h1.title(data-bind="attr: { 'class': type + \" title \" }, text: title")
       p.byline Need some help? Check out our guide.
   .row
 
+section#components
+  .container
+    .row
+      .navbar
+        .navbar-inner
+          .container
+            .nav-collapse
+              ul.nav(data-bind='foreach: views')
+                li(data-bind="click: $root.selectView")
+                  a(data-bind="text: title")
+
+    section(data-bind="with: selectedView")
+      .row(data-bind="template: { name: templateName, data: data}")
+
+script(type='text/html', id='creditCardView')
+  .container-fluid
+    .row-fluid
+      .span2
+      .span10
+        table.table.table-bordered
+          thead
+            th id
+            th Name
+          tbody(data-bind="foreach: items")
+            tr
+              td(data-bind="text: id")
+              td(data-bind="text: name")
+
+script(type='text/html', id='carLoanView')
+  .container-fluid
+    .row-fluid
+      .span2
+      .span10
+        table.table.table-bordered
+          thead
+            th id
+            th Name
+          tbody(data-bind="foreach: items")
+            tr
+              td(data-bind="text: id")
+              td(data-bind="text: name")
 
 .container
   .row
