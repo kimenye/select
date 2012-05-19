@@ -3,21 +3,21 @@
     .container
       .nav-collapse
         ul.nav
-          li(data-bind="css: { active: $root.selectedCategory() == null}")
+          li
             a(href="#") Home
         ul.nav(data-bind='foreach: $root.categories')
           li
             a(data-bind="attr: { title: title}, click: $root.selectCategory, text: title")
         form.navbar-search
           input.search-query.span2(type="text", placeholder="Search")
-.container(data-bind="visible: !(selectedCategory() != null)")
+.container(data-bind="fadeVisible: selectedCategory() == null")
   .row
     .hero-unit
       h1 Compare + Save.
       p
         | Select takes the hassle out of finding the right financial products for you - saving you time and money.
         | Make your selection from options below...
-.container(data-bind="visible: !(selectedCategory() != null)")
+.container(data-bind="fadeVisible: selectedCategory() == null")
   .row
     ul.unstyled(data-bind='foreach: $root.categories')
       li.span4.category

@@ -1,22 +1,21 @@
 /**
- * The category of items that we are comparing
+ * The category of items that we are comparing,
+ *
+ * TODO: Move to the server?
  * @param data
  * @constructor
  */
 function ComparableItemCategory(data) {
     var self = this;
-    this.type = ko.observable(data.type);
-    this.title = ko.observable(data.title);
-    this.icon = ko.observable(data.icon);
-
-    this.url = ko.computed(function() {
-        return "#" + self.type();
-    });
-
-    //Not used at the moment
-    this.parentCategory = ko.observable(null);
+    this.type = data.type;
+    this.title = data.title;
+    this.icon = data.icon;
 }
-
+/**
+ * The types of the comparable
+ *
+ * @type {Object}
+ */
 ComparableCategoryType = {
     CREDIT_CARDS: "credit-cards",
     HOME_LOANS: "home-loans",
@@ -41,7 +40,7 @@ function App() {
      *
      * @type {*} ComparableItemCategory
      */
-    self.selectedCategory = ko.observable(null);
+    self.selectedCategory = ko.observable();
 
     /**
      * Load some categories
@@ -61,8 +60,8 @@ function App() {
 
     self.selectCategory = function(category) {
 //        self.selectedCategory(category)
-//        console.log("Selected type " + category.title());
-        location.hash = category.type ()
+        console.log("Selected type " + category.title);
+        location.hash = category.type
     };
 
     self.loadCategories();
@@ -71,19 +70,26 @@ function App() {
 
         this.get('#:category', function() {
             console.log("Params is " + this.params.category);
-
-
-            var category = ko.utils.arrayFilter(self.categories, function (category) {
-                return category.type() == this.params.category;
+            var cat = this.params.category;
+            var category = ko.utils.arrayFilter(self.categories(), function (category) {
+                return category.type == cat;
             });
-            if (category)
-                self.selectedCategory(category);
+
+            console.log("Got category " + category[0].title);
+            if (category[0])
+                self.selectedCategory(category[0]);
 
         });
 
-        this.get('', function() { console.log("In the root url ") } );
+        //Enable this route for production
+//        this.get('', function() {
+//            console.log("In the root url ");
+//            if (self.selectedCategory()) {
+//                self.selectedCategory(null);
+//            }
+//        });
 
-//        this.get('', function() { this.app.runRoute('get', '#credit-cards') });
+        this.get('', function() { this.app.runRoute('get', '#car-loans') });
 
     }).run();
 }
@@ -102,7 +108,7 @@ ko.bindingHandlers.fadeVisible = {
     update: function(element, valueAccessor) {
         // Whenever the value subsequently changes, slowly fade the element in or out
         var value = valueAccessor();
-        ko.utils.unwrapObservable(value) ? $(element).fadeIn("slow") : $(element).fadeOut("slow");
+        ko.utils.unwrapObservable(value) ? $(element).fadeIn() : $(element).fadeOut();
     }
 };
 
