@@ -25,7 +25,7 @@ section#main
           a(data-bind="attr: { 'class': type }, text: title, click: $root.selectView")
 
   .container(data-bind="fadeVisible: selectedView() != null, with: selectedView")
-    .row(data-bind="template: { name: type }")
+    .row(data-bind="template: { name: template, afterRender: prepareView }")
 
 .hide.section#components
   .container
@@ -50,17 +50,32 @@ script(type='text/html', id='car-loans')
     .row(data-bind="template: { name: 'common-header' }")
   .container-fluid
     .row-fluid
-      .span3
-        span(data-bind="")
+      .span3.toolbar
+        h6(data-bind="html: items().length + \" products found\" ")
+        form
+          fieldset
+            legend Refine your search
+            .control-group
+              label(for="loanAmount") Loan Amount
+              .controls
+                .input-prepend
+                  span.add-on Kshs
+                  input.span3(type="text", name="loanAmount", data-bind="value: loanAmount")
+
+            .control-group
+              label(for="loanAmount") Loan Term
+              .controls
+                input(type="text", name="loanTerm")
       .span9
         table.table.table-bordered
           thead
-            th id
+            th Company
             th Name
           tbody(data-bind="foreach: items")
             tr
-              td(data-bind="text: id")
+              td(data-bind="text: company")
               td(data-bind="text: name")
+
 
 script(type='text/html', id='credit-cards')
   .container
@@ -86,6 +101,7 @@ script(type='text/html', id='credit-cards')
 
 
 script(type='text/javascript', src='/javascripts/jquery.1.7.2.js')
+script(type='text/javascript', src='/javascripts/jquery-ui-1.8.16.custom.min.js')
 script(type='text/javascript', src='/javascripts/underscore-min.js')
 script(type='text/javascript', src='/javascripts/bootstrap.min.js')
 script(type='text/javascript', src='/javascripts/json2.js')

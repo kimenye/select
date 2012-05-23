@@ -28,6 +28,13 @@ h1.title {
     line-height: 70px;
 }
 
+.toolbar {
+}
+
+.toolbar h6 {
+    border-bottom: 1px solid #eee;
+}
+
 p.byline {
     margin-left: 80px;
     margin-top: -18px;

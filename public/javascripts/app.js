@@ -8,7 +8,11 @@ function App() {
      */
     self.views = ko.observableArray([
         new CreditCardView(),
-        new CarLoanView()
+        new CarLoanView(),
+        new BasicView("Term Deposits", "/images/termdeposits.png",ComparableCategoryType.TERM_DEPOSITS,[]),
+        new BasicView("Home Loans", "/images/homeloans.png",ComparableCategoryType.HOME_LOANS,[]),
+        new BasicView("Savings Accounts", "/images/savingsaccounts.png",ComparableCategoryType.SAVINGS_ACCOUNTS,[]),
+        new BasicView("Personal Loans", "/images/personalloans.png",ComparableCategoryType.PERSONAL_LOANS,[])
     ]);
 
     /**
@@ -18,24 +22,14 @@ function App() {
      */
     self.selectedView = ko.observable();
 
-    /**
-     * Load some categories
-     */
-    self.loadCategories = function() {
-        self.categories.push(new ComparableItemCategory({ type: ComparableCategoryType.CREDIT_CARDS, title: "Credit Cards", icon: "/images/creditcards.png" }));
-        self.categories.push(new ComparableItemCategory({ type: ComparableCategoryType.HOME_LOANS, title: "Home Loans", icon: "/images/homeloans.png" }));
-        self.categories.push(new ComparableItemCategory({ type: ComparableCategoryType.PERSONAL_LOANS, title: "Personal Loans", icon: "/images/personalloans.png" }));
-        self.categories.push(new ComparableItemCategory({ type: ComparableCategoryType.SAVINGS_ACCOUNTS, title: "Savings Accounts", icon: "/images/savingsaccounts.png" }));
-        self.categories.push(new ComparableItemCategory({ type: ComparableCategoryType.TERM_DEPOSITS, title: "Term Deposits", icon: "/images/termdeposits.png" }));
-        self.categories.push(new ComparableItemCategory({ type: ComparableCategoryType.CAR_LOANS, title: "Car Loans", icon: "/images/carloans.png" }));
-
-        console.log("Number of categories loaded " + self.categories().length);
-    };
-
-
     self.selectView = function(view) {
-        location.hash = view.type
+        location.hash = view.type;
     };
+
+
+//    self.prepareView = function(elements) {
+//        debugger;
+//    }
 
 
     Sammy(function() {
