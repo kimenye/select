@@ -35,6 +35,14 @@ h1.title {
     border-bottom: 1px solid #eee;
 }
 
+.toolbar .control-group {
+    margin-bottom: 20px;
+}
+
+.toolbar .strong {
+    font-weight: bold;
+}
+
 p.byline {
     margin-left: 80px;
     margin-top: -18px;

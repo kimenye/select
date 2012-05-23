@@ -20,6 +20,9 @@ var BasicView = JS.Class({
         this.type = type;
         this.template = "credit-cards";
         this.items = data;
+        this.prepareView = function(items) {
+            console.log("Does nothing for now");
+        }
     }
 });
 
@@ -34,9 +37,20 @@ var CreditCardView = BasicView.extend({
             { id: 2, name: "VISA"},
             { id: 3, name: "MASTERCARD"}
         ];
-        console.log("Constructed view " + this.type);
+        this.prepareView = function(items) {
+            console.log("Does nothing for now");
+        }
    }
 });
+
+var LoanType = JS.Class({
+    construct: function(data) {
+        this.id = data.id;
+        this.title = data.title;
+        this.selected = ko.observable(data.selected || false);
+    }
+})
+
 
 var CarLoanView = BasicView.extend({
    construct: function() {
@@ -46,27 +60,60 @@ var CarLoanView = BasicView.extend({
        self.template = ComparableCategoryType.CAR_LOANS;
        self.title = "Car Loans";
        self.items = ko.observableArray([
-            { id: 1, name: "Barclays Unsecured Loan", company: "Barclays"},
-            { id: 2, name: "Standard Chartered Car Loan", company: "Standard Chartered"},
+            { id: 1, name: "Barclays Unsecured Loan", company: "Barclays", fixed: true},
+            { id: 2, name: "Standard Chartered Car Loan", company: "Standard Chartered", fixed: true},
             { id: 3, name: "Equity Personal Loan", company: "Equity"}
        ]);
 
-       self.loanAmount = ko.observable();
+       self.filteredItems = ko.computed(function() {
+            return self.items;
+       })
+
+       self.loanTypes = ko.observableArray([
+            new LoanType({ id: "1",title: "Fixed Interest", selected: true }),
+            new LoanType({ id: "1",title: "Variable Interest" }),
+            new LoanType({ id: "1",title: "Secured" }),
+            new LoanType({ id: "1",title: "Unsecured" })
+       ]);
+
+       self.loanAmount = ko.observable(1000000);
+       self.loanTerm = ko.observable(1);
+
+       self.loanAmountDisplay = ko.computed(function() {
+          return Currency("Ksh", self.loanAmount())
+       });
 
        self.prepareView = function(viewItems) {
-           self.loanAmountSlider = $( "#loanAmountSlider" ).slider({
-               value: 1000000,
-               min: 500000,
-               max: 10000000,
-               step: 100000,
-               slide: function(event, ui) {
+           self.loanAmountSlider = $("#loanAmountSlider").slider({
+               value:1000000,
+               min:500000,
+               max:10000000,
+               step:100000,
+               slide:function (event, ui) {
                    self.loanAmount(ui.value);
+               }
+           });
+
+           self.loanTermSlider = $("#loanTermSlider").slider({
+               value:5,
+               min:1,
+               max:20,
+               step:1,
+               slide:function (event, ui) {
+                   self.loanTerm(ui.value);
                }
            });
 
        }
    }
 });
+
+function Currency(sSymbol, vValue) {
+    aDigits = vValue.toFixed(2).split(".");
+    aDigits[0] = aDigits[0].split("").reverse().join("").replace(/(\d{3})(?=\d)/g, "$1,").split("").reverse().join("");
+    return sSymbol + " " + aDigits.join(".");
+}
+
 
 //var Card = JS.Class({
 //    construct: function(data) {

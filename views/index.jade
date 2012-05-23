@@ -56,22 +56,27 @@ script(type='text/html', id='car-loans')
           fieldset
             legend Refine your search
             .control-group
-              label(for="loanAmount") Loan Amount
+              label.strong.control-label(for="loanAmount", data-bind="text: \"Loan Amount: \" + loanAmountDisplay() ")
               .controls
-                .input-prepend
-                  span.add-on Kshs
-                  input.span3(type="text", name="loanAmount", data-bind="value: loanAmount")
-
+                #loanAmountSlider
             .control-group
-              label(for="loanAmount") Loan Term
+              label.strong.control-label(for="loanAmount", data-bind="text: \"Loan Term: \" + loanTerm() + \" years\" ")
               .controls
-                input(type="text", name="loanTerm")
+                #loanTermSlider
+            .control-group
+              label.strong.control-label(for="loanTypes") Loan types:
+              .controls(data-bind="foreach: loanTypes()")
+                label.checkbox
+                  span(data-bind= "text: title")
+                  input(type="checkbox", data-bind="attr: { id: id, value: title }, checked: selected")
+
+
       .span9
         table.table.table-bordered
           thead
             th Company
             th Name
-          tbody(data-bind="foreach: items")
+          tbody(data-bind="foreach: filteredItems")
             tr
               td(data-bind="text: company")
               td(data-bind="text: name")
