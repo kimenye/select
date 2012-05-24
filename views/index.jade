@@ -76,7 +76,7 @@ script(type='text/html', id='car-loans')
           thead
             th Company
             th Name
-          tbody(data-bind="foreach: filteredItems")
+          tbody(data-bind="foreach: items")
             tr
               td(data-bind="text: company")
               td(data-bind="text: name")

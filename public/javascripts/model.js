@@ -45,9 +45,16 @@ var CreditCardView = BasicView.extend({
 
 var LoanType = JS.Class({
     construct: function(data) {
-        this.id = data.id;
-        this.title = data.title;
-        this.selected = ko.observable(data.selected || false);
+        var self = this;
+        self.id = data.id;
+        self.title = data.title;
+        self.selected = ko.observable(data.selected || false);
+        self.belongsTo = data.belongsTo;
+
+        self.selected.subscribe(function(newValue) {
+           console.log("Modified " + self.title);
+//            self.belongsTo.filteredItems(self);
+        });
     }
 })
 
@@ -59,21 +66,18 @@ var CarLoanView = BasicView.extend({
        self.type = ComparableCategoryType.CAR_LOANS;
        self.template = ComparableCategoryType.CAR_LOANS;
        self.title = "Car Loans";
+
        self.items = ko.observableArray([
             { id: 1, name: "Barclays Unsecured Loan", company: "Barclays", fixed: true},
             { id: 2, name: "Standard Chartered Car Loan", company: "Standard Chartered", fixed: true},
             { id: 3, name: "Equity Personal Loan", company: "Equity"}
        ]);
 
-       self.filteredItems = ko.computed(function() {
-            return self.items;
-       })
-
        self.loanTypes = ko.observableArray([
-            new LoanType({ id: "1",title: "Fixed Interest", selected: true }),
-            new LoanType({ id: "1",title: "Variable Interest" }),
-            new LoanType({ id: "1",title: "Secured" }),
-            new LoanType({ id: "1",title: "Unsecured" })
+           new LoanType({ id: "1",title: "Fixed Interest", selected: true, belongsTo: this}),
+           new LoanType({ id: "1",title: "Variable Interest", belongsTo: this }),
+           new LoanType({ id: "1",title: "Secured", belongsTo: this }),
+           new LoanType({ id: "1",title: "Unsecured", belongsTo: this })
        ]);
 
        self.loanAmount = ko.observable(1000000);
