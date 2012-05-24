@@ -28,12 +28,6 @@ function App() {
         location.hash = view.type;
     };
 
-
-//    self.prepareView = function(elements) {
-//        debugger;
-//    }
-
-
     Sammy(function() {
 
         this.get('#:view', function() {
@@ -62,9 +56,9 @@ ko.bindingHandlers.fadeVisible = {
 };
 
 $(function() {
-//    ko.applyBindings(new App(), $("#main")[0]);
-    window.mv = new App()
-    ko.applyBindings(window.mv, $("#main")[0]);
+    ko.applyBindings(new App(), $("#main")[0]);
+//    window.mv = new App()
+//    ko.applyBindings(window.mv, $("#main")[0]);
 });
 
 

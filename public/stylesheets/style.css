@@ -28,6 +28,11 @@ h1.title {
     line-height: 70px;
 }
 
+h1.logo {
+    background-image: url(images/logo.png);
+    background-size: 80px;
+}
+
 .toolbar {
 }
 
@@ -39,8 +44,27 @@ h1.title {
     margin-bottom: 20px;
 }
 
-.toolbar .strong {
+.strong {
     font-weight: bold;
+}
+
+.no-available-selections {
+    margin-bottom: 10px;
+}
+
+.selections .well {
+    background: transparent;
+    text-align: right;
+    box-shadow: none;
+    border: none;
+}
+
+.selections .well .btn {
+    margin-left: 10px;
+}
+
+.selected {
+    background-color: #5BB75B;
 }
 
 p.byline {

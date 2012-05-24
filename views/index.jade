@@ -74,18 +74,52 @@ script(type='text/html', id='car-loans')
               p.control-label.strong(for="text: count")
 
       .span9
-        table.table.table-bordered
-          thead
-            th Company
-            th Name
-            th Max Loan Amount (kshs)
-            th Max Loan Term (yrs)
-          tbody(data-bind="foreach: items")
-            tr
-              td(data-bind="text: company")
-              td(data-bind="text: name")
-              td(data-bind="text: maxAmount")
-              td(data-bind="text: maxLoanTerm")
+        h2 Search Results
+        .available-selections(data-bind="if: items().length > 0")
+
+            table.table.table-bordered
+              thead
+                th Name
+                th Company
+                th Rate Type
+                th Max Loan Amount (kshs)
+                th Max Loan Term (yrs)
+                th
+              tbody(data-bind="foreach: items")
+                tr
+                  td(data-bind="text: data.name")
+                  td(data-bind="text: data.company")
+                  td(data-bind="text: data.rateType")
+                  td(data-bind="text: data.amount")
+                  td(data-bind="text: data.maxLoanTerm")
+                  td
+                    button.btn.btn-success(data-bind="click: $parent.selectItem") Add
+        .no-available-selections(data-bind="if: items().length == 0")
+          h3 No Car Loans matching your criteria are available
+        .selections(data-bind="if: selectedItems().length > 0")
+          h2 Your Selections
+            small
+              |&nbsp;These are the loans you have selected to compare
+          table.table.table-bordered
+              thead
+                th Name
+                th Company
+                th Rate Type
+                th Max Loan Amount (kshs)
+                th Max Loan Term (yrs)
+                th
+              tbody(data-bind="foreach: selectedItems")
+                tr
+                  td(data-bind="text: data.name")
+                  td(data-bind="text: data.company")
+                  td(data-bind="text: data.rateType")
+                  td(data-bind="text: data.amount")
+                  td(data-bind="text: data.maxLoanTerm")
+                  td
+                    button.btn.btn-success(data-bind="click: $parent.unselectItem") Remove
+          .well.form-inline
+            span(data-bind="if: (selectedItems().length < 2)") Choose more than one to compare
+            input.btn.btn-large.btn-success(data-bind="enable: (selectedItems().length > 1)", type="button", value="Compare")
 
 
 script(type='text/html', id='credit-cards')
@@ -108,7 +142,7 @@ script(type='text/html', id='credit-cards')
   .row
     hr
     footer
-      span Fancy copyright stuff and privacy policies
+      p Copyright &copy; 2012 &bull; Sprout Consulting
 
 
 script(type='text/javascript', src='/javascripts/jquery.1.7.2.js')
