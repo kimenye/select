@@ -27,6 +27,7 @@ section#main
   .container(data-bind="fadeVisible: selectedView() != null, with: selectedView")
     .row(data-bind="template: { name: template, afterRender: prepareView }")
 
+
 .hide.section#components
   .container
     .row
@@ -69,17 +70,22 @@ script(type='text/html', id='car-loans')
                 label.checkbox
                   span(data-bind= "text: title")
                   input(type="checkbox", data-bind="attr: { id: id, value: title }, checked: selected")
-
+            .control-group
+              p.control-label.strong(for="text: count")
 
       .span9
         table.table.table-bordered
           thead
             th Company
             th Name
+            th Max Loan Amount (kshs)
+            th Max Loan Term (yrs)
           tbody(data-bind="foreach: items")
             tr
               td(data-bind="text: company")
               td(data-bind="text: name")
+              td(data-bind="text: maxAmount")
+              td(data-bind="text: maxLoanTerm")
 
 
 script(type='text/html', id='credit-cards')

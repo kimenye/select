@@ -15,6 +15,8 @@ function App() {
         new BasicView("Personal Loans", "/images/personalloans.png",ComparableCategoryType.PERSONAL_LOANS,[])
     ]);
 
+    self.currencySymbol = "Kshs"
+
     /**
      * Selected category
      *
@@ -60,7 +62,9 @@ ko.bindingHandlers.fadeVisible = {
 };
 
 $(function() {
-    ko.applyBindings(new App(), $("#main")[0]);
+//    ko.applyBindings(new App(), $("#main")[0]);
+    window.mv = new App()
+    ko.applyBindings(window.mv, $("#main")[0]);
 });
 
 
