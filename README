@@ -1,0 +1,6 @@
+How to run the application
+==========================
+- Clone the application
+- cd into the directory
+- Run [npm install -d]
+- Run [node app.js]
