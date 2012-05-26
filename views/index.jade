@@ -46,11 +46,30 @@ script(type="text/html", id="common-header")
   h1.title(data-bind="attr: { 'class': type + \" title \" }, text: title")
   p.byline Need some help? Check out our guide.
 
+script(type="text/html", id="car-loans-results")
+  table.table.table-bordered
+    thead
+      th Name
+      th Company
+      th Rate Type
+      th Max Loan Amount (kshs)
+      th Max Loan Term (yrs)
+      th
+    tbody(data-bind="foreach: items")
+      tr
+        td(data-bind="text: data.name")
+        td(data-bind="text: data.company")
+        td(data-bind="text: data.rateType")
+        td(data-bind="text: data.amount")
+        td(data-bind="text: data.maxLoanTerm")
+        td
+          input.btn.btn-success(data-bind="click: $parent.selectItem, enable: ($parent.selectedItems().length < 3), value: action, clickBubble: false", type="button")
+
 script(type='text/html', id='car-loans')
   .container
     .row(data-bind="template: { name: 'common-header' }")
   .container-fluid
-    .row-fluid
+    .row-fluid(data-bind="if: page() == 0")
       .span3.toolbar
         h6(data-bind="html: items().length + \" products found\" ")
         form
@@ -73,29 +92,14 @@ script(type='text/html', id='car-loans')
             .control-group
               p.control-label.strong(for="text: count")
 
-      .span9
+      .span9.result
         h2 Search Results
         .available-selections(data-bind="if: items().length > 0")
+          .results(data-bind="template: { name: 'car-loans-results'}")
 
-            table.table.table-bordered
-              thead
-                th Name
-                th Company
-                th Rate Type
-                th Max Loan Amount (kshs)
-                th Max Loan Term (yrs)
-                th
-              tbody(data-bind="foreach: items")
-                tr
-                  td(data-bind="text: data.name")
-                  td(data-bind="text: data.company")
-                  td(data-bind="text: data.rateType")
-                  td(data-bind="text: data.amount")
-                  td(data-bind="text: data.maxLoanTerm")
-                  td
-                    button.btn.btn-success(data-bind="click: $parent.selectItem") Add
         .no-available-selections(data-bind="if: items().length == 0")
           h3 No Car Loans matching your criteria are available
+
         .selections(data-bind="if: selectedItems().length > 0")
           h2 Your Selections
             small
@@ -119,9 +123,20 @@ script(type='text/html', id='car-loans')
                     button.btn.btn-success(data-bind="click: $parent.unselectItem") Remove
           .well.form-inline
             span(data-bind="if: (selectedItems().length < 2)") Choose more than one to compare
-            input.btn.btn-large.btn-success(data-bind="enable: (selectedItems().length > 1)", type="button", value="Compare")
+            input.btn.btn-large.btn-success(data-bind="enable: (selectedItems().length > 1), click: next", type="button", value="Compare")
 
-
+    .row-fluid(data-bind="if: page() == 1")
+      .span3.toolbar
+        h2 Refine my Preferences
+        input.span4.btn.btn-large.btn-success(data-bind="click: back", value="Back")
+      .span9
+        h2 My Selected Car Loans
+        p You previously selected the following products for us to compare
+        ul.unstyled(data-bind="foreach: selectedItems")
+          li.span4.thumbnail
+            |  <h3 data-bind="text: data.name" >
+            |    <i class="icon-remove" />
+            |  </h3>
 script(type='text/html', id='credit-cards')
   .container
     .row(data-bind="template: { name: 'common-header' }")

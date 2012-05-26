@@ -66,7 +66,7 @@ var CarLoan = JS.Class({
         var self = this;
         self.data = _.extend(data,
             {
-                selected: ko.observable(false),
+                selected: ko.observable(data.selected),
                 rateType: ko.computed(function() {
                    return data.fixed ? "Fixed" : "Variable";
                 }),
@@ -74,6 +74,10 @@ var CarLoan = JS.Class({
                     return Currency("", data.maxAmount);
                 })
             });
+
+        self.action = ko.computed(function() {
+            return self.data.selected() ? "Remove" : "Add"
+        })
     },
 
     validate_types : function(types) {
@@ -96,6 +100,7 @@ var CarLoanView = BasicView.extend({
        self.type = ComparableCategoryType.CAR_LOANS;
        self.template = ComparableCategoryType.CAR_LOANS;
        self.title = "Car Loans";
+       self.page = ko.observable(1);
 
        self.loanTypes = ko.observableArray([
            new LoanType({ id: "1",title: "Fixed Interest", selected: false, typeProperty: "fixed", belongsTo: this}),
@@ -106,11 +111,19 @@ var CarLoanView = BasicView.extend({
 
        self.loanAmount = ko.observable(1000000);
        self.loanTerm = ko.observable(1);
+       self.monthlyBudget = ko.observable(0);
 
+       self.next = function() {
+           self.page(self.page() + 1);
+       }
+
+       self.back = function() {
+           self.page(self.page() - 1);
+       }
 
        self.rawItems = [
-               new CarLoan({ id: 1, name: "Barclays Unsecured Loan", company: "Barclays", fixed: true, maxAmount: 1000000, unsecured: true, maxLoanTerm: 5}),
-               new CarLoan({ id: 2, name: "Standard Chartered Car Loan", company: "Standard Chartered", fixed: true, unsecured: true, maxAmount: 7000000, maxLoanTerm: 10}),
+               new CarLoan({ id: 1, name: "Barclays Unsecured Loan", company: "Barclays", fixed: true, maxAmount: 1000000, unsecured: true, maxLoanTerm: 5, selected: true}),
+               new CarLoan({ id: 2, name: "Standard Chartered Car Loan", company: "Standard Chartered", fixed: true, unsecured: true, maxAmount: 7000000, maxLoanTerm: 10, selected: true}),
                new CarLoan({ id: 3, name: "Equity Personal Loan", company: "Equity", variable: true, unsecured: true, maxAmount: 3000000, maxLoanTerm: 20}),
                new CarLoan({ id: 4, name: "Family Bank Car Loan", company: "Family Bank", variable: true, maxAmount: 10000000, unsecured: true, maxLoanTerm: 2}),
                new CarLoan({ id: 5, name: "Family Bank Secured Personal Loan", company: "Family Bank", variable: true, secured: true, maxAmount: 10000000, maxLoanTerm: 2})

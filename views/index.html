@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel='stylesheet' href='/stylesheets/bootstrap.min.css'/>
+    <link rel='stylesheet' href='/stylesheets/bootstrap-responsive.min.css'/>
+    <link rel='stylesheet' href='/stylesheets/jquery-ui-1.8.16.custom.css'/>
+    <link rel='stylesheet' href='/stylesheets/style.css'/>
+    <link rel='icon' href='images/favicon.ico'/>
+    <title>Select</title>
+<head>
+<body>
+    <section id="main">
+        <!-- Navbar -->
+        <div class="navbar navbar-fixed-top">
+            <div class="navbar-inner">
+                <div class="container">
+                    <div class="nav-collapse">
+                        <ul class="nav">
+                            <li>
+                                <a href="#">Home</a>
+                            </li>
+                        </ul>
+                        <ul class="nav" data-bind="foreach: $root.views">
+                            <li>
+                                <a data-bind="attr: { title: title}, click: $root.selectView, text: title"></a>
+                            </li>
+                        </ul>
+                        <form class="navbar-search">
+                            <input class="search-query span2" type="text" placeholder="Search..." />
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!--Hero Unit-->
+        <div class="container" data-bind="fadeVisible: selectedView() == null">
+            <div class="row">
+                <div class="hero-unit">
+                    <h1>Select & Save</h1>
+                    <p>Select takes the hassle out of finding the right financial products for you - saving you time and money.Make your selection from options below...</p>
+                </div>
+            </div>
+        </div>
+
+        <!--Views by icons -->
+        <div class="container" data-bind="fadeVisible: selectedView() == null">
+            <div class="row">
+                <ul class="unstyled" data-bind="foreach: $root.views">
+                    <li class="span4 category">
+                        <a data-bind="attr: { class: type }, text: title, click: $root.selectView"></a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <!--Selected View-->
+        <div class="container" data-bind="fadeVisible: selectedView() != null, with: selectedView">
+            <div class="row" data-bind="template: { name: template, afterRender: prepareView }"></div>
+        </div>
+
+    </section>
+
+
+    <!--Start Templates-->
+
+    <!--Common Header-->
+    <script type="text/html" id="common-header">
+        <h1 class="title" data-bind="attr: { class: type + ' title' }, text: title"></h1>
+        <p class="byline">Need some help? Check out our guide.</p>
+    </script>
+
+    <!--Car Loans Results-->
+    <script type="text/html" id="car-loans-results">
+        <table class="table table-bordered">
+            <thead>
+                <th>Name</th>
+                <th>Company</th>
+                <th>Rate Type</th>
+                <th>Max Loan Amount (kshs)</th>
+                <th>Max Loan Term (yrs)</th>
+                <th></th>
+            </thead>
+            <tbody data-bind="foreach: items">
+                <tr>
+                    <td data-bind="text: data.name"></td>
+                    <td data-bind="text: data.company"></td>
+                    <td data-bind="text: data.rateType"></td>
+                    <td data-bind="text: data.amount"></td>
+                    <td data-bind="text: data.maxLoanTerm"></td>
+                    <td>
+                        <input class="btn btn-success" data-bind="click: $parent.selectItem, enable: ($parent.selectedItems().length < 3), value: action, clickBubble: false" type="button" />
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </script>
+
+    <!--Car Loans-->
+    <script type="text/html" id="car-loans">
+        <div class="container">
+            <div class="row" data-bind="template: { name: 'common-header' }">
+            </div>
+        </div>
+        <div class="container-fluid">
+            <div class="row-fluid" data-bind="if: page() == 0">
+                <div class="span3 toolbar">
+                    <h6 data-bind="html: items().length + ' products found'"></h6>
+                    <form>
+                        <fieldset>
+                            <legend>Refine your Search</legend>
+
+                            <div class="control-group">
+                                <label class="strong control-label" data-bind="text: 'Loan Amount: ' + loanAmountDisplay()"></label>
+                                <div class="controls">
+                                    <div id="loanAmountSlider"></div>
+                                </div>
+                            </div>
+
+                            <div class="control-group">
+                                <label class="strong control-label" data-bind="text: 'Loan Term: ' + loanTerm() + ' years'"></label>
+                                <div class="controls">
+                                    <div id="loanTermSlider"></div>
+                                </div>
+                            </div>
+
+                            <div class="control-group">
+                                <label class="strong control-label" for="loanTypes">Loan types:</label>
+                                <div class="controls" data-bind="foreach: loanTypes()">
+                                    <label class="checkbox">
+                                        <span data-bind= "text: title"></span>
+                                        <input type="checkbox" data-bind="attr: { id: id, value: title }, checked: selected" />
+                                    </label>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </form>
+                </div>
+
+                <div class="span9 result">
+                    <h2>Search Results</h2>
+                    <div class="available-selections" data-bind="if: items().length > 0">
+                        <div class="results" data-bind="template: { name: 'car-loans-results'}"></div>
+                    </div>
+
+                    <div class="no-available-selections" data-bind="if: items().length == 0">
+                        <h3>No Car Loans matching your criteria are available</h3>
+                    </div>
+
+                    <div class="selections" data-bind="if: selectedItems().length > 0">
+                        <h2>Your Selections <small>These are the loans you have selected to compare</small></h2>
+
+                        <table class="table table-bordered">
+                            <thead>
+                                <th>Name</th>
+                                <th>Company</th>
+                                <th>Rate Type</th>
+                                <th>Max Loan Amount (kshs)</th>
+                                <th>Max Loan Term (yrs)</th>
+                                <th></th>
+                            </thead>
+                            <tbody data-bind="foreach: selectedItems">
+                                <tr>
+                                    <td data-bind="text: data.name"></td>
+                                    <td data-bind="text: data.company"></td>
+                                    <td data-bind="text: data.rateType"></td>
+                                    <td data-bind="text: data.amount"></td>
+                                    <td data-bind="text: data.maxLoanTerm"></td>
+                                    <td>
+                                        <input class="btn btn-success" data-bind="click: $parent.unselectItem, value: action, clickBubble: false" type="button" value="Remove" />
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <div class="form-inline well">
+                            <span data-bind="if: (selectedItems().length < 2)">Choose more than one to compare</span>
+                            <input class="btn btn-large btn-success" data-bind="enable: (selectedItems().length > 1), click: next" type="button" value="Compare" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row-fluid" data-bind="if: page() == 1">
+                <div class="span3 toolbar">
+                    <h2>Refine my Preferences</h2>
+                    <input type="button" value="Back" class="btn btn-success" data-bind="click: back" />
+                </div>
+
+                <div class="span9">
+                    <h2>My Selected Car Loans</h2>
+                    <p>You previously selected the following products for us to compare</p>
+                    <ul class="unstyled" data-bind="foreach: selectedItems">
+                        <li class="thumbnail span4">
+                            <h3 data-bind="text: data.name" />
+                            <span><i class="icon-remove" /></span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </script>
+
+    <!--Credit Cards-->
+    <script type="text/html" id="credit-cards">
+        <div class="container">
+            <div class="row" data-bind="template: { name: 'common-header' }">
+            </div>
+        </div>
+        <div class="container-fluid">
+            <div class="row-fluid">
+                <div class="span3"></div>
+                <div class="span9">
+                    <table class="table table-bordered">
+                        <thead>
+                            <th>id</th>
+                            <th>Name</th>
+                        </thead>
+                        <tbody data-bind="foreach: items">
+                            <tr>
+                                <td data-bind="text: id"></td>
+                                <td data-bind="text: name"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </script>
+    <!--End Templates-->
+
+    <!--Footer-->
+    <div class="container">
+        <div class="row">
+            <hr />
+            <footer>
+                <p>Copyright &copy; 2012 &bull; <a href="http://sprout.co.ke">Sprout Consulting</a></p>
+            </footer>
+        </div>
+    </div>
+
+    <script type="text/javascript" src="/javascripts/jquery.1.7.2.js"></script>
+    <script type="text/javascript" src="/javascripts/jquery-ui-1.8.16.custom.min.js"></script>
+    <script type="text/javascript" src="/javascripts/underscore-min.js"></script>
+    <script type="text/javascript" src="/javascripts/bootstrap.min.js"></script>
+
+    <script type="text/javascript" src="/javascripts/json2.js"></script>
+    <script type="text/javascript" src="/javascripts/sammy.js"></script>
+    <script type="text/javascript" src="/javascripts/date.js"></script>
+    <script type="text/javascript" src="/javascripts/knockout.js"></script>
+    <script type="text/javascript" src="/javascripts/js.class.min.js"></script>
+    <script type="text/javascript" src="/javascripts/model.js"></script>
+    <script type="text/javascript" src="/javascripts/app.js"></script>
+
+</body>
+</html>
