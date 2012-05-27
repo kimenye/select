@@ -66,7 +66,7 @@ var CarLoan = JS.Class({
         var self = this;
         self.data = _.extend(data,
             {
-                selected: ko.observable(data.selected),
+                selected: ko.observable(data.selected != null? data.selected : false),
                 rateType: ko.computed(function() {
                    return data.fixed ? "Fixed" : "Variable";
                 }),
@@ -78,12 +78,23 @@ var CarLoan = JS.Class({
         self.action = ko.computed(function() {
             return self.data.selected() ? "Remove" : "Add"
         })
+
+        self.isAdd = ko.computed(function() {
+            return self.action() == "Add"
+        })
+
+        self.isRemove = ko.computed(function() {
+            return self.action() == "Remove"
+        })
+
+        self.act = function() {
+            self.data.selected(!self.data.selected());
+        }
     },
 
     validate_types : function(types) {
         var passed = true;
         var loan = this.data;
-        console.log("Validating types");
         _.each(types, function(type) {
             passed = type.is_valid_for(loan);
         });
@@ -100,13 +111,13 @@ var CarLoanView = BasicView.extend({
        self.type = ComparableCategoryType.CAR_LOANS;
        self.template = ComparableCategoryType.CAR_LOANS;
        self.title = "Car Loans";
-       self.page = ko.observable(1);
+       self.page = ko.observable(0);
 
        self.loanTypes = ko.observableArray([
-           new LoanType({ id: "1",title: "Fixed Interest", selected: false, typeProperty: "fixed", belongsTo: this}),
-           new LoanType({ id: "1",title: "Variable Interest", typeProperty: "variable", belongsTo: this }),
-           new LoanType({ id: "1",title: "Secured", typeProperty: "secured", belongsTo: this }),
-           new LoanType({ id: "1",title: "Unsecured",typeProperty: "unsecured", belongsTo: this })
+           new LoanType({ id: "1",title: "Fixed Interest", selected: false, typeProperty: "fixed", belongsTo: self}),
+           new LoanType({ id: "1",title: "Variable Interest", typeProperty: "variable", belongsTo: self }),
+           new LoanType({ id: "1",title: "Secured", typeProperty: "secured", belongsTo: self }),
+           new LoanType({ id: "1",title: "Unsecured",typeProperty: "unsecured", belongsTo: self })
        ]);
 
        self.loanAmount = ko.observable(1000000);
@@ -119,6 +130,10 @@ var CarLoanView = BasicView.extend({
 
        self.back = function() {
            self.page(self.page() - 1);
+       }
+
+       self.canAdd = function() {
+           return self.selectedItems().length < 3;
        }
 
        self.rawItems = [
@@ -157,13 +172,7 @@ var CarLoanView = BasicView.extend({
           });
        });
 
-       self.selectItem = function(item) {
-           item.data.selected(true);
-       }
 
-       self.unselectItem = function(item) {
-           item.data.selected(false);
-       }
 
        self.loanAmountDisplay = ko.computed(function() {
           return Currency("Ksh", self.loanAmount())

@@ -82,15 +82,19 @@
                 <th>Max Loan Term (yrs)</th>
                 <th></th>
             </thead>
-            <tbody data-bind="foreach: items">
+            <tbody data-bind="foreach: $data">
                 <tr>
                     <td data-bind="text: data.name"></td>
                     <td data-bind="text: data.company"></td>
                     <td data-bind="text: data.rateType"></td>
                     <td data-bind="text: data.amount"></td>
                     <td data-bind="text: data.maxLoanTerm"></td>
+
                     <td>
-                        <input class="btn btn-success" data-bind="click: $parent.selectItem, enable: ($parent.selectedItems().length < 3), value: action, clickBubble: false" type="button" />
+                        <div data-bind="visible: isAdd">
+                            <input class="btn btn-success" data-bind="click: act, enable: $parents[1].selectedItems().length < 3" value="Add" type="button"/>
+                        </div>
+                        <input class="btn btn-success" data-bind="click: act, visible: isRemove" value="Remove" type="button"/>
                     </td>
                 </tr>
             </tbody>
@@ -141,7 +145,7 @@
                 <div class="span9 result">
                     <h2>Search Results</h2>
                     <div class="available-selections" data-bind="if: items().length > 0">
-                        <div class="results" data-bind="template: { name: 'car-loans-results'}"></div>
+                        <div class="results" data-bind="template: { name: 'car-loans-results', data: items}"></div>
                     </div>
 
                     <div class="no-available-selections" data-bind="if: items().length == 0">
@@ -151,28 +155,7 @@
                     <div class="selections" data-bind="if: selectedItems().length > 0">
                         <h2>Your Selections <small>These are the loans you have selected to compare</small></h2>
 
-                        <table class="table table-bordered">
-                            <thead>
-                                <th>Name</th>
-                                <th>Company</th>
-                                <th>Rate Type</th>
-                                <th>Max Loan Amount (kshs)</th>
-                                <th>Max Loan Term (yrs)</th>
-                                <th></th>
-                            </thead>
-                            <tbody data-bind="foreach: selectedItems">
-                                <tr>
-                                    <td data-bind="text: data.name"></td>
-                                    <td data-bind="text: data.company"></td>
-                                    <td data-bind="text: data.rateType"></td>
-                                    <td data-bind="text: data.amount"></td>
-                                    <td data-bind="text: data.maxLoanTerm"></td>
-                                    <td>
-                                        <input class="btn btn-success" data-bind="click: $parent.unselectItem, value: action, clickBubble: false" type="button" value="Remove" />
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
+                        <div class="results" data-bind="template: { name: 'car-loans-results', data: selectedItems}"></div>
 
                         <div class="form-inline well">
                             <span data-bind="if: (selectedItems().length < 2)">Choose more than one to compare</span>
