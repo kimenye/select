@@ -130,6 +130,9 @@ var CarLoanView = BasicView.extend({
 
        self.back = function() {
            self.page(self.page() - 1);
+           if (self.page() == 0) {
+               self.prepareView();
+           }
        }
 
        self.canAdd = function() {
@@ -179,6 +182,7 @@ var CarLoanView = BasicView.extend({
        });
 
        self.prepareView = function(viewItems) {
+           console.log("Rendering view");
            self.loanAmountSlider = $("#loanAmountSlider").slider({
                value:self.loanAmount(),
                min:500000,
