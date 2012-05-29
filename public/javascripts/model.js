@@ -148,8 +148,6 @@ var CarLoanView = BasicView.extend({
                 return type.selected();
             });
 
-            console.log("Refreshing selected items ", self.rawItems.length);
-
             return _.filter(self.rawItems, function (loan) {
                 return (
                     loan.data.maxAmount >= self.loanAmount() &&
