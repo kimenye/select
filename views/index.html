@@ -65,10 +65,25 @@
 
     <!--Start Templates-->
 
+    <script type="text/html" id="progress-bar">
+        <ol class="unstyled progress-bar">
+            <li data-bind="css: { selected: page() == 0 }"><span>Search</span></li>
+            <li data-bind="css: { selected: page() == 1 }"><span>Compare</span></li>
+            <li data-bind="css: { selected: page() == 1 }"><span>Select</span></li>
+        </ol>
+    </script>
+
     <!--Common Header-->
     <script type="text/html" id="common-header">
-        <h1 class="title" data-bind="attr: { class: type + ' title' }, text: title"></h1>
-        <p class="byline">Need some help? Check out our guide.</p>
+        <div class="span3">
+            <h1 class="title" data-bind="attr: { class: type + ' title' }, text: title"></h1>
+            <p class="byline">Need some help? Check out our guide.</p>
+        </div>
+
+        <div class="span9">
+            <div data-bind="template: { name: 'progress-bar' }"></div>
+        </div>
+
     </script>
 
     <!--Car Loans Results-->

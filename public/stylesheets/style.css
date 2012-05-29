@@ -85,4 +85,40 @@ p.byline {
 .savings-accounts {
     background: url('/images/savingsaccounts.png') no-repeat;
 }
+/* Progress bar */
 
+ol.progress-bar {
+    list-style-type: none;
+    padding: 0 20px 0 20px;
+    overflow: hidden;
+    background: url('/images/progress-bar-sprite.png') 0 19px repeat-x;
+    height: 35px;
+    margin-top: 40px;
+    margin-bottom: 20px;
+}
+
+ol.progress-bar li {
+    /*width: 130px;*/
+    width: 33%;
+    float: left;
+    padding-bottom: 17px;
+    text-align: center;
+    /*font-size: 12px;*/
+    font-weight: bold;
+    color: #808080;
+    background: url('/images/progress-bar-sprite.png') center -30px no-repeat;
+}
+
+/*ol.progress-bar li.selected {
+    background: url('/images/progress-bar-sprite.png') center 3px no-repeat;
+}*/
+
+ol.progress-bar li.selected {
+    background: url('/images/progress-bar-sprite.png') center -14px no-repeat;
+}
+
+ol.progress-bar li span {
+    display: block;
+    background-color: white;
+    height: 19px;
+}
